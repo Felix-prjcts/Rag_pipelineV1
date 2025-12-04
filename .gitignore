@@ -1,0 +1,15 @@
+# .gitignore
+
+# Environnements virtuels
+venv/
+.env/
+__pycache__/
+*.pyc
+*.pyo
+
+.DS_Store
+Thumbs.db
+
+data/
+
+app.py

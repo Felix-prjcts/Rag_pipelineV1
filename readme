@@ -1,0 +1,22 @@
+# Mini RAG / NLP Project
+
+This is an experimental prototype using a RAG (Retrieval-Augmented Generation) pipeline on text documents.  
+It includes:
+
+- Chunking of documents
+- Embeddings with `SentenceTransformer` (MiniLM-L6)
+- Vector indexing and search with `Qdrant`
+- Text generation using a HuggingFace model (`Flan-T5`)
+
+> Note: This is a test project and a hybrid approach combining semantic search and BM25 is planned to improve results.
+
+## Goal
+- Explore a RAG pipeline for legal or economic documents.
+- Understand embeddings, vector indexing, and text generation in practice.
+- Provide a lightweight prototype for experimentation.
+
+## Installation
+```bash
+python -m venv venv
+source venv/bin/activate  # On Windows: venv\Scripts\activate
+pip install -r requirements.txt
