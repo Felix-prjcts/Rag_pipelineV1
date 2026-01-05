@@ -64,12 +64,12 @@ class RAGEngine:
         return chunks
 
     def build_indices(self, chunks):
-        # !! FIX: eviter le crash si le PDF est vide ou illisible
+        # eviter le crash si le PDF est vide ou illisible
         if not chunks:
             print("Warning: 0 chunks to index")
             return None, None
 
-        # 1. Setup Qdrant (Memoire vive uniquement)
+        # Qdrant
         client = QdrantClient(":memory:")
         dim = self.embed_model.get_sentence_embedding_dimension()
         
@@ -89,7 +89,7 @@ class RAGEngine:
         ]
         client.upsert(collection_name="rag_collection", points=points)
 
-        # 2. Setup BM25 (keyword search)
+        # Setup BM25 (keyword)
         # on tokenise simple pour l'instant
         tokenized_corpus = [self._tokenize(c["text"]) for c in chunks]
         bm25 = BM25Okapi(tokenized_corpus)
@@ -110,7 +110,7 @@ class RAGEngine:
         bm25_scores = bm25.get_scores(tk_query)
         sparse_indices = np.argsort(bm25_scores)[::-1][:10] # top 10
 
-        # C. Fusion des scores (RRF algorithm)
+        # C. Fusion des scores (RRF)
         fused_scores = {}
         
         # Poids vecteurs
@@ -140,7 +140,7 @@ class RAGEngine:
         max_chars = 1600 
         safe_context = context[:max_chars]
         
-        # astuce: mettre la question EN PREMIER dans le prompt
+        # astuce: mettre la question first dans le prompt
         # ca evite que le modele hallucine si le contexte est tronqué
         prompt = (
             f"Question: {query}\n\n"
